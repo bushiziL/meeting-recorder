@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>录音即纪要 — 智能会议录音工作台</title>
+  <meta name="description" content="录音、实时转写、AI纪要、待办提取，一站式搞定。零门槛，打开浏览器就用。">
+  <link rel="icon" type="image/png" href="/icon-512.png">
+  <link rel="apple-touch-icon" href="/icon-512.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif; color: #1e293b; background: #f8fafc; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* Hero */
+    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #2563eb, #3b82f6, #4f46e5); color: #fff; text-align: center; }
+    .hero-inner { max-width: 960px; margin: 0 auto; padding: 80px 24px 100px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 9999px; padding: 6px 16px; font-size: 14px; margin-bottom: 24px; }
+    .hero-logo-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+    .hero-logo { width: 96px; height: 96px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); background: #fff; padding: 8px; animation: float 3s ease-in-out infinite; }
+    @media(min-width:768px) { .hero-logo { width: 128px; height: 128px; border-radius: 32px; } .hero-inner { padding: 112px 24px 120px; } }
+    .hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; line-height: 1.15; }
+    @media(min-width:768px) { .hero h1 { font-size: 3.75rem; } }
+    .hero p { font-size: 1.125rem; color: rgba(191,219,254,1); max-width: 600px; margin: 0 auto 32px; line-height: 1.7; }
+    @media(min-width:768px) { .hero p { font-size: 1.25rem; } }
+    .hero-actions { display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: center; }
+    @media(min-width:640px) { .hero-actions { flex-direction: row; } }
+
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #2563eb; font-weight: 600; padding: 14px 32px; border-radius: 12px; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(30,64,175,0.3); transition: background 0.2s; }
+    .btn-primary:hover { background: #eff6ff; }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-weight: 500; padding: 14px 32px; border-radius: 12px; font-size: 1.125rem; transition: background 0.2s; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    .hero-wave { position: absolute; bottom: 0; left: 0; right: 0; line-height: 0; }
+    .hero-wave svg { display: block; width: 100%; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    /* Sections */
+    .section { max-width: 960px; margin: 0 auto; padding: 80px 24px; }
+    .section-title { font-size: 1.875rem; font-weight: 700; text-align: center; margin-bottom: 16px; }
+    .section-sub { color: #64748b; text-align: center; font-size: 1.125rem; margin-bottom: 56px; }
+
+    /* Feature grid */
+    .feature-grid { display: grid; gap: 32px; }
+    @media(min-width:768px) { .feature-grid { grid-template-columns: 1fr 1fr; } }
+    .feature-card { background: #fff; border-radius: 16px; padding: 32px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: box-shadow 0.2s; }
+    .feature-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+    .feature-icon.red { background: #fef2f2; color: #ef4444; }
+    .feature-icon.blue { background: #eff6ff; color: #3b82f6; }
+    .feature-icon.purple { background: #faf5ff; color: #a855f7; }
+    .feature-icon.green { background: #f0fdf4; color: #22c55e; }
+    .feature-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { color: #64748b; line-height: 1.7; }
+
+    /* Diff grid */
+    .diff-section { background: #fff; padding: 80px 24px; }
+    .diff-grid { display: grid; gap: 32px; max-width: 960px; margin: 0 auto; }
+    @media(min-width:768px) { .diff-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .diff-item { text-align: center; padding: 24px; }
+    .diff-item .icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .diff-item h3 { font-weight: 600; font-size: 1.125rem; margin-bottom: 8px; }
+    .diff-item p { color: #64748b; font-size: 14px; }
+
+    /* CTA */
+    .cta-inner { background: linear-gradient(135deg, #2563eb, #4f46e5); border-radius: 24px; padding: 48px; text-align: center; color: #fff; }
+    @media(min-width:768px) { .cta-inner { padding: 64px; } }
+    .cta-inner h2 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
+    @media(min-width:768px) { .cta-inner h2 { font-size: 2.25rem; } }
+    .cta-inner p { color: rgba(191,219,254,1); font-size: 1.125rem; max-width: 480px; margin: 0 auto 32px; }
+    .cta-inner .btn-primary { box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+    /* Footer */
+    footer { border-top: 1px solid #e2e8f0; padding: 32px 24px; text-align: center; color: #94a3b8; font-size: 14px; }
+    footer p + p { margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">🎙️ 浏览器原生录音 · 无需安装 App</div>
+      <div class="hero-logo-wrap">
+        <img src="/icon-512.png" alt="录音即纪要" class="hero-logo">
+      </div>
+      <h1>录音即纪要</h1>
+      <p>说完话，纪要就出来了。<br>录音 → 实时转写 → AI 纪要 → 待办跟进，一站搞定。</p>
+      <div class="hero-actions">
+        <a href="/app/" class="btn-primary">
+          开始使用
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </a>
+        <a href="#features" class="btn-secondary">
+          了解更多
+        </a>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 80V40C240 0 480 80 720 40C960 0 1200 80 1440 40V80H0Z" fill="#f8fafc"/></svg>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <h2 class="section-title">四个核心能力</h2>
+    <p class="section-sub">不搞花架子，只做真有用的事</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon red">🎙️</div>
+        <h3>一键录音</h3>
+        <p>点一下就开始，支持暂停和继续。录音文件自动保存到浏览器，随时回听。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon blue">⚡</div>
+        <h3>实时转写</h3>
+        <p>说话的当下，文字就出来了。支持浏览器语音识别和阿里云 Paraformer 两种模式。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon purple">🤖</div>
+        <h3>AI 纪要</h3>
+        <p>录音结束后一键生成结构化会议纪要——背景、讨论、结论、分歧、风险，全都有。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">✅</div>
+        <h3>待办提取</h3>
+        <p>从纪要中自动识别待办事项，带负责人、截止日期和优先级，会后直接跟进。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Differentiators -->
+  <section class="diff-section">
+    <div>
+      <h2 class="section-title">和别的工具不一样</h2>
+      <p class="section-sub">不是为了替代飞书妙记，是为了给不想上飞书的人一个选择</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="icon">🌐</div>
+        <h3>零门槛</h3>
+        <p>打开浏览器就录，不装 App、不注册账号、不绑定平台。手机电脑都行。</p>
+      </div>
+      <div class="diff-item">
+        <div class="icon">🔑</div>
+        <h3>自带模型</h3>
+        <p>填你的 API Key 就用，不赚差价。OpenAI、通义千问、文心一言都支持。</p>
+      </div>
+      <div class="diff-item">
+        <div class="icon">🔒</div>
+        <h3>数据本地</h3>
+        <p>录音存浏览器 IndexedDB，不上云。对企业用户，这是硬卖点。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="cta-inner">
+      <h2>试试看？</h2>
+      <p>无需注册，无需付费，打开就用。</p>
+      <a href="/app/" class="btn-primary">
+        开始使用
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>录音即纪要 — 智能会议录音工作台</p>
+    <p>数据存浏览器本地 · AI 能力自带 Key · 开箱即用</p>
+  </footer>
+</body>
+</html>
